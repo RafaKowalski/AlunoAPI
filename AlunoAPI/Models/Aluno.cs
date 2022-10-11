@@ -11,6 +11,6 @@ namespace AlunoAPI.Models
         public int Idade { get; set; }
         public int SalaId { get; set; }
         [JsonIgnore]
-        public Sala Sala { get; set; }
+        public Sala? Sala { get; set; }
     }
 }
