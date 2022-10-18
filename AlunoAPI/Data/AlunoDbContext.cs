@@ -11,5 +11,6 @@ namespace AlunoAPI.Data
 
         public DbSet<Aluno>? Alunos { get; set; }
         public DbSet<Sala>? Sala { get; set; }
+        public DbSet<Professor>? Professores { get; set; }
     }
 }
