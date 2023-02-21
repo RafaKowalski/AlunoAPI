@@ -22,5 +22,14 @@ namespace AlunoAPI.Controllers
         {
             return await _context.Professores.ToListAsync();
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Professor>> PostProfessor(Professor professor)
+        {
+            _context.Professores.Add(professor);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetProfessor", new { id = professor.ProfessorId }, professor);
+        }
     }
 }
