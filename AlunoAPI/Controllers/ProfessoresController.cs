@@ -1,5 +1,7 @@
 ﻿using AlunoAPI.Data;
+using AlunoAPI.Interfaces;
 using AlunoAPI.Models;
+using AlunoAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,26 +12,25 @@ namespace AlunoAPI.Controllers
     [ApiController]
     public class ProfessoresController : ControllerBase
     {
-        private readonly AlunoDbContext _context;
+        private readonly IProfessores _professoresService;
 
-        public ProfessoresController(AlunoDbContext context)
+        public ProfessoresController(IProfessores professoresService)
         {
-            _context = context;
+            _professoresService = professoresService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Professor>>> GetProfessor()
         {
-            return await _context.Professores.ToListAsync();
+            return Ok(await _professoresService.GetProfessor());
         }
 
         [HttpPost]
         public async Task<ActionResult<Professor>> PostProfessor(Professor professor)
         {
-            _context.Professores.Add(professor);
-            await _context.SaveChangesAsync();
+            await _professoresService.PostProfessor(professor);
 
-            return CreatedAtAction("GetProfessor", new { id = professor.ProfessorId }, professor);
+            return Ok(professor);
         }
     }
 }
