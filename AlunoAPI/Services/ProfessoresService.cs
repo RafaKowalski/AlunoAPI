@@ -24,5 +24,31 @@ namespace AlunoAPI.Services
             _context.Professores.Add(professor);
             await _context.SaveChangesAsync();
         }
+
+        public async Task PutProfessor(int id, Professor professor)
+        {
+            _context.Entry(professor).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProfessorExists(id))
+                {
+                    throw new Exception("id de professor não existe");
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        private bool ProfessorExists(int id)
+        {
+            return _context.Professores.Any(e => e.ProfessorId == id);
+        }
     }
 }

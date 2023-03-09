@@ -32,5 +32,18 @@ namespace AlunoAPI.Controllers
 
             return Ok(professor);
         }
+
+        [HttpPut]
+        public async Task<ActionResult<Professor>> PutProfessor(int id, Professor professor)
+        {
+            if (id != professor.ProfessorId)
+            {
+                return BadRequest();
+            }
+
+            await _professoresService.PutProfessor(id, professor);
+
+            return NoContent();
+        }
     }
 }
