@@ -33,7 +33,7 @@ namespace AlunoAPI.Controllers
             return Ok(professor);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult<Professor>> PutProfessor(int id, Professor professor)
         {
             if (id != professor.ProfessorId)
@@ -42,6 +42,14 @@ namespace AlunoAPI.Controllers
             }
 
             await _professoresService.PutProfessor(id, professor);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Professor>> DeleteProfessor(int id)
+        {
+            await _professoresService.DeleteProfessor(id);
 
             return NoContent();
         }

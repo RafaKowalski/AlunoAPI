@@ -46,6 +46,16 @@ namespace AlunoAPI.Services
             }
         }
 
+        public async Task DeleteProfessor(int id)
+        {
+            var professor = await _context.Professores.FindAsync(id);
+            if (professor == null)
+                throw new Exception("Professor não existe");
+
+            _context.Professores.Remove(professor);
+            await _context.SaveChangesAsync();
+        }
+
         private bool ProfessorExists(int id)
         {
             return _context.Professores.Any(e => e.ProfessorId == id);
