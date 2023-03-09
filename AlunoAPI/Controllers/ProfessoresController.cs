@@ -25,6 +25,14 @@ namespace AlunoAPI.Controllers
             return Ok(await _professoresService.GetProfessor());
         }
 
+        [HttpGet("Saudação{nome}")]
+        public ActionResult Saudacao(string nome)
+        {
+            string mensagem = $"saudação {nome} \n" + DateTime.Now.ToString();
+
+            return Ok(mensagem);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Professor>> GetProfessorById(int id)
         {
