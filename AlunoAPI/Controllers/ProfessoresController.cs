@@ -25,6 +25,12 @@ namespace AlunoAPI.Controllers
             return Ok(await _professoresService.GetProfessor());
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Professor>> GetProfessorById(int id)
+        {
+            return Ok(await _professoresService.GetProfessorById(id));
+        }
+
         [HttpPost]
         public async Task<ActionResult<Professor>> PostProfessor(Professor professor)
         {

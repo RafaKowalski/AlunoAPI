@@ -18,6 +18,10 @@ namespace AlunoAPI.Services
         {
             return await _context.Professores.ToListAsync();
         }
+        public async Task<Professor> GetProfessorById(int id)
+        {
+            return await _context.Professores.FindAsync(id);
+        }
 
         public async Task PostProfessor(Professor professor)
         {
