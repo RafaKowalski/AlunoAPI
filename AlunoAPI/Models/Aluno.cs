@@ -8,6 +8,7 @@ namespace AlunoAPI.Models
         public int AlunoId { get; set; }
         [StringLength(50)]
         public string? Nome { get; set; }
+        public string? Sobrenome { get; set; }
         public int Idade { get; set; }
         public int SalaId { get; set; }
         [JsonIgnore]
