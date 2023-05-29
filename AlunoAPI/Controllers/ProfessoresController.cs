@@ -28,7 +28,7 @@ namespace AlunoAPI.Controllers
         [HttpGet("Saudação{nome}")]
         public ActionResult Saudacao(string nome)
         {
-            string mensagem = $"saudação {nome} \n" + DateTime.Now.ToString();
+            string mensagem = $"Seja Bem vindo {nome} \n" + DateTime.Now.ToString();
 
             return Ok(mensagem);
         }
