@@ -10,7 +10,6 @@ namespace AlunoAPI.Models
         public string? Nome { get; set; }
         public string? Sobrenome { get; set; }
         public int Idade { get; set; }
-        [JsonIgnore]
         public int SalaId { get; set; }
         [JsonIgnore]
         public Sala? Sala { get; set; }
