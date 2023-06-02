@@ -44,7 +44,7 @@ namespace AlunoAPI.Controllers
         {
             await _professoresService.PostProfessor(professor);
 
-            return Ok(professor);
+            return CreatedAtAction("NewProfessor", new { id = professor.ProfessorId}, professor);
         }
 
         [HttpPut("{id}")]
