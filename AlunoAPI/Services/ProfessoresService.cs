@@ -14,7 +14,7 @@ namespace AlunoAPI.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Professor>> GetProfessor()
+        public async Task<IEnumerable<Professor>> GetProfessores()
         {
             return await _context.Professores.ToListAsync();
         }
