@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AlunoAPI.Data;
 using AlunoAPI.Models;
+using AlunoAPI.Interfaces;
 
 namespace AlunoAPI.Controllers
 {
@@ -14,41 +15,34 @@ namespace AlunoAPI.Controllers
     [ApiController]
     public class AlunosController : ControllerBase
     {
-        private readonly AlunoDbContext _context;
+        private readonly IAlunos _alunosService;
 
-        public AlunosController(AlunoDbContext context)
+        public AlunosController(IAlunos alunosService)
         {
-            _context = context;
+            _alunosService = alunosService;
         }
 
         // GET: api/Alunos
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Aluno>>> GetAlunos()
         {
-            return await _context.Alunos.ToListAsync();
+            return Ok(await _alunosService.GetAlunos());
         }
 
         // GET: api/Alunos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Aluno>> GetAluno(int id)
         {
-            var aluno = await _context.Alunos.FindAsync(id);
-
-            if (aluno == null)
-            {
-                return NotFound();
-            }
-
-            return aluno;
+            return Ok(await _alunosService.GetAlunoById(id));
         }
 
-        [HttpGet("Ordenado")]
-        public ActionResult<IEnumerable<Aluno>> GetAlunoOrdenado()
-        {
-            var ordenado = _context.Alunos.OrderBy(n => n.Nome).ToList();
+        //[HttpGet("Ordenado")]
+        //public ActionResult<IEnumerable<Aluno>> GetAlunoOrdenado()
+        //{
+        //    var ordenado = _context.Alunos.OrderBy(n => n.Nome).ToList();
 
-            return ordenado;
-        }
+        //    return ordenado;
+        //}
 
         // PUT: api/Alunos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -60,23 +54,7 @@ namespace AlunoAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(aluno).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AlunoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _alunosService.PutAluno(id, aluno);
 
             return NoContent();
         }
@@ -86,8 +64,7 @@ namespace AlunoAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Aluno>> PostAluno(Aluno aluno)
         {
-            _context.Alunos.Add(aluno);
-            await _context.SaveChangesAsync();
+            await _alunosService.PostAluno(aluno);
 
             return CreatedAtAction("GetAluno", new { id = aluno.AlunoId }, aluno);
         }
@@ -96,21 +73,9 @@ namespace AlunoAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAluno(int id)
         {
-            var aluno = await _context.Alunos.FindAsync(id);
-            if (aluno == null)
-            {
-                return NotFound();
-            }
-
-            _context.Alunos.Remove(aluno);
-            await _context.SaveChangesAsync();
+            await _alunosService.DeleteAluno(id);
 
             return NoContent();
-        }
-
-        private bool AlunoExists(int id)
-        {
-            return _context.Alunos.Any(e => e.AlunoId == id);
         }
     }
 }

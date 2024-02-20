@@ -22,7 +22,7 @@ namespace AlunoAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Professor>>> GetProfessor()
         {
-            return Ok(await _professoresService.GetProfessor());
+            return Ok(await _professoresService.GetProfessores());
         }
 
         [HttpGet("Saudação{nome}")]
