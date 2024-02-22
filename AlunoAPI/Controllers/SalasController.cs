@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AlunoAPI.Data;
 using AlunoAPI.Models;
+using AlunoAPI.Services;
+using AlunoAPI.Interfaces;
 
 namespace AlunoAPI.Controllers
 {
@@ -14,25 +16,25 @@ namespace AlunoAPI.Controllers
     [ApiController]
     public class SalasController : ControllerBase
     {
-        private readonly AlunoDbContext _context;
+        private readonly ISala _salasService;
 
-        public SalasController(AlunoDbContext context)
+        public SalasController(ISala salaService)
         {
-            _context = context;
+            _salasService = salaService;
         }
 
         // GET: api/Salas
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Sala>>> GetSala()
         {
-            return await _context.Sala.ToListAsync();
+            return Ok(await _salasService.GetSalas());
         }
 
         // GET: api/Salas/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Sala>> GetSala(int id)
+        public async Task<ActionResult<Sala>> GetSalaById(int id)
         {
-            var sala = await _context.Sala.FindAsync(id);
+            var sala = await _salasService.GetSalaById(id);
 
             if (sala == null)
             {
@@ -42,44 +44,12 @@ namespace AlunoAPI.Controllers
             return sala;
         }
 
-        // PUT: api/Salas/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSala(int id, Sala sala)
-        {
-            if (id != sala.SalaId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(sala).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SalaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         // POST: api/Salas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Sala>> PostSala(Sala sala)
         {
-            _context.Sala.Add(sala);
-            await _context.SaveChangesAsync();
+            await _salasService.PostSala(sala);
 
             return CreatedAtAction("GetSala", new { id = sala.SalaId }, sala);
         }
@@ -88,21 +58,9 @@ namespace AlunoAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSala(int id)
         {
-            var sala = await _context.Sala.FindAsync(id);
-            if (sala == null)
-            {
-                return NotFound();
-            }
-
-            _context.Sala.Remove(sala);
-            await _context.SaveChangesAsync();
+            await _salasService.DeleteSala(id);
 
             return NoContent();
-        }
-
-        private bool SalaExists(int id)
-        {
-            return _context.Sala.Any(e => e.SalaId == id);
         }
     }
 }
