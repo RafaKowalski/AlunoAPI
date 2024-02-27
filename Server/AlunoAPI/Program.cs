@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IProfessores, ProfessoresService>();
 builder.Services.AddTransient<IAlunos, AlunosService>();
+builder.Services.AddTransient<ISala, SalasService>();
 
 string mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AlunoDbContext>(options =>
